@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block content %}
+<!-- Hero section -->
+<!-- Hero section end -->
+<section class="">
+    <div class="container">
+
+        {% if request.user.is_authenticated %}
+        <div class="content">
+            <div class="container1">
+                <div class="section-title mt-4">
+                    {% if fee.owing == 0 and lib.owing == 0 and dep.passed %}
+                    <h1 class="bg-success text-white"> Status : APPROVED</h1>
+                    {% else %}
+                    <h1 class="bg-success text-white">Aggregate Report</h1>
+                    {% endif %}</td>
+                </div>
+
+                <table class="table table-hover table-border shadow" summary="no_orderDate">
+                    <tr>
+                        <th>Category</th>
+                        <th>Sub Category</th>
+                        <th>Product</th>
+                        <th>Unit Price</th>
+                        <th>Procure Unit Price</th>
+                        <th>Items Sold Total</th>
+                        <th>Profits</th>
+                    </tr>
+                    <tbody>
+                        {% for profit in profits %}
+                        <tr>
+                            <td>{{profit.category}}</td>
+                            <td>{{profit.sub_category}}</td>
+                            <td>{{profit.product}}</td>
+                            <td>{{profit.unit_price}}</td>
+                            <td>{{profit.procure_unit_price}}</td>
+                            <td>{{profit.items_sold}}</td>
+                            <td>${{profit.profit}}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                    </tr>
+
+                </table>
+            </div>
+            <br>
+
+
+
+            {% endif %}
+        </div>
+
+        {% endblock content %}
