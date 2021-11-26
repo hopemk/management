@@ -27,5 +27,5 @@ class Product(models.Model):
     #title = models.CharField(max_length=280)
 
     def __str__(self):
-        return self.model
+        return self.brand.category.name + ' ' + self.brand.name + ' ' + self.model + ' ' + self.serial_number
 
