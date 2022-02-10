@@ -5,6 +5,8 @@ from django.contrib.auth.models import User
 from posapp.models import Product
 from django.db.models import Sum
 
+from rest_framework import serializers
+
 class Sell(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     items_sold = models.IntegerField()
@@ -39,7 +41,17 @@ class Sell(models.Model):
         #self.product.update(quantity_before_sale = quantity)
         #Pro.objects.filter(sell = self.product.name).update(quantity_after_sale = quantity)
         super().save(*args, **kwargs)
+class SellSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Sell
+        fields = ['id', 'product', 'items_sold', 'paid', 'time']
 
+class SellItem(models.Model):
+    product = models.ForeignKey(Sell, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    items_sold = models.IntegerField()
+    paid = models.FloatField(max_length=280)
+    time = models.DateTimeField(auto_now_add=True)
 class Sale(models.Model):
     #product = models.ForeignKey(Product, on_delete=models.CASCADE)
     #items_sold = models.IntegerField()

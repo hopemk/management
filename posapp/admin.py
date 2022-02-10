@@ -35,6 +35,6 @@ class SubCategoryAdmin(admin.ModelAdmin):
 
 
 # Register your models here.
-#admin.site.register(Category)
-#admin.site.register(SubCategory, SubCategoryAdmin)
-#admin.site.register(Product, ProductAdmin)
+admin.site.register(Category)
+admin.site.register(SubCategory, SubCategoryAdmin)
+admin.site.register(Product, ProductAdmin)

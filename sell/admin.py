@@ -55,5 +55,5 @@ class SaleAdmin(admin.ModelAdmin):
         return product_list
 
 
-#admin.site.register(Sell, SellAdmin)
-#admin.site.register(Sale, SaleAdmin)
+admin.site.register(Sell, SellAdmin)
+admin.site.register(Sale, SaleAdmin)
