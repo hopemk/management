@@ -11,6 +11,7 @@ from rest_framework import authentication, permissions
 from django.contrib.auth.models import User
 
 import json
+from .utils import is_valid
 # Create your views here.
 def product(request):
     
@@ -63,18 +64,30 @@ class SellView(APIView):
 
     def post(self, request):
         data = request.data
-        #product = Product.objects.get(name = data['product'])
-        product = Product.get_object(data['product'])
-        if not product:
-            return Response({"message": "product not available"}, status=status.HTTP_404_NOT_FOUND )
-        
-        
+        valid = is_valid(data)
+        if valid:
+            return Response({"data": valid}, status=status.HTTP_404_NOT_FOUND)
         sell = Sell(
-            product = product,
-            items_sold = data['items_sold'],
-            paid = data['paid'],
+            #product = product,
+            #items_sold = data['items_sold'],
+            #paid = total_paid
         )
-        sell.save()
+        sell = sell.save()
+        #product = Product.objects.get(name = data['product'])
+        total_paid = 0
+        for item in data:
+            product = Product.get_object(data['product'])
+            items_sold = data['items_sold'] 
+            paid = data['paid']
+            sell_item = SellItem(
+                sell = sell,
+                product = product,
+                items_sold = items_sold,
+                paid = paid
+            )
+            sell_item.save()
+            total_paid += paid
+            sell.update(paid = total_paid)
         
         return Response({"message": "saved", "data":data}, status=status.HTTP_201_CREATED )
 

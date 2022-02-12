@@ -32,6 +32,7 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
+
     def get_object(val):
         try:
             return Product.objects.get(name=val)

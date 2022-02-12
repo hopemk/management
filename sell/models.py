@@ -8,9 +8,9 @@ from django.db.models import Sum
 from rest_framework import serializers
 
 class Sell(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    items_sold = models.IntegerField()
-    paid = models.FloatField(max_length=280)
+    #product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    #items_sold = models.IntegerField()
+    total_paid = models.FloatField(default=0,max_length=280)
     time = models.DateTimeField(auto_now_add=True)
     #friends = models.ManyToManyField(Product)
     #quantity_after_sale = models.IntegerField()
@@ -20,7 +20,7 @@ class Sell(models.Model):
 
     def __str__(self):
         return self.product.name
-
+    '''
     @admin.display
     def sums(self):
         product_list = [product['product'] for product in Sell.objects.values('product').distinct()]
@@ -31,7 +31,7 @@ class Sell(models.Model):
     def product_name(self):
         product_list = [product['product'] for product in Sell.objects.values('product').distinct()]
         return set(product_list)
-
+    
     def save(self, *args, **kwargs):
         products = Sell.objects.values('product').distinct()
         
@@ -41,13 +41,14 @@ class Sell(models.Model):
         #self.product.update(quantity_before_sale = quantity)
         #Pro.objects.filter(sell = self.product.name).update(quantity_after_sale = quantity)
         super().save(*args, **kwargs)
+        '''
 class SellSerializer(serializers.ModelSerializer):
     class Meta:
         model = Sell
         fields = ['id', 'product', 'items_sold', 'paid', 'time']
 
 class SellItem(models.Model):
-    product = models.ForeignKey(Sell, on_delete=models.CASCADE)
+    sell = models.ForeignKey(Sell, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     items_sold = models.IntegerField()
     paid = models.FloatField(max_length=280)
