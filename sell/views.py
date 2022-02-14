@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from .models import Sell, SellSerializer
+from .models import Sell, SellSerializer, SellItem
 from django.db.models import Sum
 from posapp.models import Product
 
@@ -73,12 +73,14 @@ class SellView(APIView):
             #paid = total_paid
         )
         sell = sell.save()
+        if True:
+            return Response({"data": sell}, status=status.HTTP_404_NOT_FOUND)
         #product = Product.objects.get(name = data['product'])
         total_paid = 0
         for item in data:
-            product = Product.get_object(data['product'])
-            items_sold = data['items_sold'] 
-            paid = data['paid']
+            product = Product.get_object(item['product'])
+            items_sold = item['items_sold'] 
+            paid = item['paid']
             sell_item = SellItem(
                 sell = sell,
                 product = product,

@@ -17,10 +17,10 @@ class Sell(models.Model):
 
     class Meta:
         ordering = ['time']
-
+'''
     def __str__(self):
         return self.product.name
-    '''
+    
     @admin.display
     def sums(self):
         product_list = [product['product'] for product in Sell.objects.values('product').distinct()]

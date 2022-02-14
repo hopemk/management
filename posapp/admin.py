@@ -2,7 +2,7 @@ from django.contrib import admin
 
 from .models import Category, SubCategory, Product
 from sell.models import Sale
-
+'''
 class ProductAdmin(admin.ModelAdmin):
     #raw_id_fields = ('product',)
     list_display = ['date_updated', 'sub_category', 'name', 'bought_with']
@@ -29,7 +29,7 @@ class ProductAdmin(admin.ModelAdmin):
         print(my_list)
         return my_list
 
-
+'''
 class SubCategoryAdmin(admin.ModelAdmin):
     list_display = ['category', 'name']
 
@@ -37,4 +37,4 @@ class SubCategoryAdmin(admin.ModelAdmin):
 # Register your models here.
 admin.site.register(Category)
 admin.site.register(SubCategory, SubCategoryAdmin)
-admin.site.register(Product, ProductAdmin)
+admin.site.register(Product)
