@@ -58,15 +58,15 @@ class SellView(APIView):
     def get(self, request):
         products = Sell.objects.all()
         serializer = SellSerializer(products, many = True)
-        print(products[0].product)
-        print(repr(serializer))
+        #print(products[0].product)
+        #print(repr(serializer))
         return Response({"data": serializer.data}, status=status.HTTP_200_OK)
 
     def post(self, request):
         data = request.data
         valid = is_valid(data)
         if valid:
-            return Response({"data": valid}, status=status.HTTP_404_NOT_FOUND)
+            return Response({"data": valid}, status=status.HTTP_406_NOT_ACCEPTABLE)
         sell = Sell(
             #product = product,
             #items_sold = data['items_sold'],
@@ -93,11 +93,15 @@ class SellView(APIView):
             sell.total_paid += paid
             sell.save()
         
-        return Response({"message": "saved", "data":data}, status=status.HTTP_201_CREATED )
+        return Response({"message": "saved"}, status=status.HTTP_201_CREATED )
 
     def put(self, request):
         data = request.data
         #product = Product.objects.get(name = data['product'])
+        valid = is_valid(data)
+
+        if valid:
+            return Response({"data": valid}, status=status.HTTP_406_NOT_ACCEPTABLE)
         product = Product.get_object(data['product'])
         if not product:
             return Response({"message": "product not available"}, status=status.HTTP_404_NOT_FOUND )

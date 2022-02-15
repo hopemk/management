@@ -20,3 +20,9 @@ def is_valid(data):
         return errors
     else:
         return False
+def is_valid_sell(data):
+    sell = Sell.get_object(data.id)
+    if not sell:
+        return "sell not found"
+    else:
+        is_valid(data.sells)

@@ -18,9 +18,17 @@ class Sell(models.Model):
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
         return self
+    def get_object(val):
+        try:
+            return Sell.objects.get(id=val)
+        except:
+            return False
+
 
     class Meta:
         ordering = ['time']
+
+    
 '''
     def __str__(self):
         return self.product.name
