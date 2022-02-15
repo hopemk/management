@@ -15,6 +15,10 @@ class Sell(models.Model):
     #friends = models.ManyToManyField(Product)
     #quantity_after_sale = models.IntegerField()
 
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        return self
+
     class Meta:
         ordering = ['time']
 '''

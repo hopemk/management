@@ -73,8 +73,10 @@ class SellView(APIView):
             #paid = total_paid
         )
         sell = sell.save()
+        '''
         if True:
             return Response({"data": sell}, status=status.HTTP_404_NOT_FOUND)
+            '''
         #product = Product.objects.get(name = data['product'])
         total_paid = 0
         for item in data:
@@ -88,8 +90,8 @@ class SellView(APIView):
                 paid = paid
             )
             sell_item.save()
-            total_paid += paid
-            sell.update(paid = total_paid)
+            sell.total_paid += paid
+            sell.save()
         
         return Response({"message": "saved", "data":data}, status=status.HTTP_201_CREATED )
 
