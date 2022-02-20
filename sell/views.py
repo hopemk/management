@@ -89,7 +89,8 @@ class SellView(APIView):
                 items_sold = items_sold,
                 paid = paid
             )
-            sell_item.save()
+            sell_item = sell_item.save()
+            sell.sell_items.add(sell_item)
             sell.total_paid += paid
             sell.save()
         

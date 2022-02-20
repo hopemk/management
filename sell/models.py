@@ -7,11 +7,23 @@ from django.db.models import Sum
 
 from rest_framework import serializers
 
+
+class SellItem(models.Model):
+    #sell = models.ForeignKey(Sell, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    items_sold = models.IntegerField()
+    paid = models.FloatField(max_length=280)
+    time = models.DateTimeField(auto_now_add=True)
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        return self
+
 class Sell(models.Model):
     #product = models.ForeignKey(Product, on_delete=models.CASCADE)
     #items_sold = models.IntegerField()
     total_paid = models.FloatField(default=0,max_length=280)
     time = models.DateTimeField(auto_now_add=True)
+    sell_items = models.ManyToManyField(SellItem)
     #friends = models.ManyToManyField(Product)
     #quantity_after_sale = models.IntegerField()
 
@@ -59,12 +71,6 @@ class SellSerializer(serializers.ModelSerializer):
         model = Sell
         fields = ['id', 'product', 'items_sold', 'paid', 'time']
 
-class SellItem(models.Model):
-    sell = models.ForeignKey(Sell, on_delete=models.CASCADE)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    items_sold = models.IntegerField()
-    paid = models.FloatField(max_length=280)
-    time = models.DateTimeField(auto_now_add=True)
 class Sale(models.Model):
     #product = models.ForeignKey(Product, on_delete=models.CASCADE)
     #items_sold = models.IntegerField()
