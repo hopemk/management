@@ -61,23 +61,21 @@ class SellView(APIView):
         #print(products[0].product)
         #print(repr(serializer))
         return Response({"data": serializer.data}, status=status.HTTP_200_OK)
+    def get(self, request, pk):
+        sell = Sell.get_object(pk)
+        serializer = SellSerializer(sell)
+        #print(products[0].product)
+        #print(repr(serializer))
+        return Response({"data": serializer.data}, status=status.HTTP_200_OK)
 
     def post(self, request):
         data = request.data
         valid = is_valid(data)
         if valid:
             return Response({"data": valid}, status=status.HTTP_406_NOT_ACCEPTABLE)
-        sell = Sell(
-            #product = product,
-            #items_sold = data['items_sold'],
-            #paid = total_paid
-        )
+        sell = Sell()
         sell = sell.save()
-        '''
-        if True:
-            return Response({"data": sell}, status=status.HTTP_404_NOT_FOUND)
-            '''
-        #product = Product.objects.get(name = data['product'])
+        
         total_paid = 0
         for item in data:
             product = Product.get_object(item['product'])
@@ -98,27 +96,34 @@ class SellView(APIView):
 
     def put(self, request):
         data = request.data
+        sell_id = data['id']
+        sell = Sell.get_object(sell_id)
+        if not sell:
+            return Response({"message": "sell not available"}, status=status.HTTP_404_NOT_FOUND )
         #product = Product.objects.get(name = data['product'])
-        valid = is_valid(data)
+        valid = is_valid(data['sell_items'])
 
         if valid:
             return Response({"data": valid}, status=status.HTTP_406_NOT_ACCEPTABLE)
-        product = Product.get_object(data['product'])
-        if not product:
-            return Response({"message": "product not available"}, status=status.HTTP_404_NOT_FOUND )
-        
-        
-        sell = Sell(
-            product = product,
-            items_sold = data['items_sold'],
-            paid = data['paid'],
-        )
-        sell.save()
-        
+        total_paid = 0
+        for item in data['sell_items']:
+            sell_item = SellItem.get_object(item['id'])
+            sell_item.product = Product.get_object(item['product'])
+            sell_item.items_sold = item['items_sold'] 
+            sell_item.paid = item['paid']
+            sell_item = sell_item.save()
+            #sell.sell_items.add(sell_item)
+            #sell.total_paid += paid
+            #sell.save()
         return Response({"message": "saved", "data":data}, status=status.HTTP_201_CREATED )
     
     def delete(self, request):
-        data = request.data
-        return Response({"message": "saved", "data":data}, status=status.HTTP_202_ACCEPTED )
+        sell_id = request.data['id']
+        sell = Sell.get_object(sell_id)
+        if sell:
+            sell.delete()
+        else:
+            return Response({"message": "sell not available"}, status=status.HTTP_404_NOT_FOUND )
+        return Response({"message": "deleted", "data":request.data}, status=status.HTTP_202_ACCEPTED )
     
     
