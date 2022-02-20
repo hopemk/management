@@ -55,15 +55,13 @@ def product(request):
 class SellView(APIView):
     model = Sell
 
-    def get(self, request):
-        products = Sell.objects.all()
-        serializer = SellSerializer(products, many = True)
-        #print(products[0].product)
-        #print(repr(serializer))
-        return Response({"data": serializer.data}, status=status.HTTP_200_OK)
-    def get(self, request, pk):
-        sell = Sell.get_object(pk)
-        serializer = SellSerializer(sell)
+    def get(self, request, pk = None):
+        if pk:
+            sell = Sell.get_object(pk)
+            serializer = SellSerializer(sell)
+        else:
+            products = Sell.objects.all()
+            serializer = SellSerializer(products, many = True)
         #print(products[0].product)
         #print(repr(serializer))
         return Response({"data": serializer.data}, status=status.HTTP_200_OK)
