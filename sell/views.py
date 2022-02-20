@@ -84,7 +84,7 @@ class SellView(APIView):
             items_sold = item['items_sold'] 
             paid = item['paid']
             sell_item = SellItem(
-                sell = sell,
+                #sell = sell,
                 product = product,
                 items_sold = items_sold,
                 paid = paid

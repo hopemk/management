@@ -14,10 +14,15 @@ class SellItem(models.Model):
     items_sold = models.IntegerField()
     paid = models.FloatField(max_length=280)
     time = models.DateTimeField(auto_now_add=True)
+    def __str__(self):
+        return self.product.name
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
         return self
-
+class SellItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SellItem
+        fields = ['id', 'product', 'items_sold', 'paid', 'time']
 class Sell(models.Model):
     #product = models.ForeignKey(Product, on_delete=models.CASCADE)
     #items_sold = models.IntegerField()
@@ -67,9 +72,11 @@ class Sell(models.Model):
         super().save(*args, **kwargs)
         '''
 class SellSerializer(serializers.ModelSerializer):
+    sell_items = SellItemSerializer(read_only=True, many=True)
+
     class Meta:
         model = Sell
-        fields = ['id', 'product', 'items_sold', 'paid', 'time']
+        fields = ['id', 'sell_items', 'time']
 
 class Sale(models.Model):
     #product = models.ForeignKey(Product, on_delete=models.CASCADE)
