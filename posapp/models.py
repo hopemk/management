@@ -13,6 +13,11 @@ class Category(models.Model):
 
     def __str__(self):
         return self.name
+class SubCategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = ['id', 'name']
+
 
 class SubCategory(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
@@ -20,6 +25,12 @@ class SubCategory(models.Model):
 
     def __str__(self):
         return self.name
+class SubCategorySerializer(serializers.ModelSerializer):
+    category = CategorySerializer(read_only=True)
+    class Meta:
+        model = SubCategory
+        fields = ['id', 'name', 'category']
+
 
 class Product(models.Model):
     sub_category = models.ForeignKey(SubCategory, on_delete=models.CASCADE)
@@ -40,5 +51,11 @@ class Product(models.Model):
             return False
 
 
+class SellSerializer(serializers.ModelSerializer):
+    category = SubCategorySerializer(read_only=True)
+
+    class Meta:
+        model = Product
+        fields = ['id', 'category', 'quantity', 'date_updated', 'price_per_item', 'procure_price_per_item']
 
 
