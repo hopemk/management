@@ -123,5 +123,21 @@ class SellView(APIView):
         else:
             return Response({"message": "sell not available"}, status=status.HTTP_404_NOT_FOUND )
         return Response({"message": "deleted", "data":request.data}, status=status.HTTP_202_ACCEPTED )
+class SellItemView(APIView):
+    model = SellItem
+
+    def get(self, request, pk):
+        item = SellItem.get_object(pk)
+        if not item:
+            return Response({"message": "sell_item not available"}, status=status.HTTP_404_NOT_FOUND )
+        serializer = SellItemSerializer(item)
+        return Response({"data": serializer.data}, status=status.HTTP_200_OK)
+    def post(self, request):
+        return 'done'
+    def put(self, request):
+        return 'updated'
+    def delete(self, request):
+        return 'deleted'
+
     
     

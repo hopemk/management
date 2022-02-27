@@ -16,6 +16,11 @@ class SellItem(models.Model):
     time = models.DateTimeField(auto_now_add=True)
     def __str__(self):
         return self.product.name
+    def get_object(val):
+        try:
+            return SellItem.objects.get(id=val)
+        except:
+            return False
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
         return self
