@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from .models import Sell, SellSerializer, SellItem
+from .models import Sell, SellSerializer, SellItem, SellItemSerializer
 from django.db.models import Sum
 from posapp.models import Product
 

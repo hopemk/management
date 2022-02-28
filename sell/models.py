@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib import admin
 
 from django.contrib.auth.models import User
-from posapp.models import Product
+from posapp.models import Product, ProductSerializer
 from django.db.models import Sum
 
 from rest_framework import serializers
@@ -25,6 +25,7 @@ class SellItem(models.Model):
         super().save(*args, **kwargs)
         return self
 class SellItemSerializer(serializers.ModelSerializer):
+    product = ProductSerializer(read_only=True)
     class Meta:
         model = SellItem
         fields = ['id', 'product', 'items_sold', 'paid', 'time']
