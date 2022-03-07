@@ -12,9 +12,16 @@ from rest_framework import serializers
 
 class Category(models.Model):
     name = models.CharField(max_length=50)
+    date_created= models.DateTimeField(auto_now_add=True)
+    date_updated = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.name
+    def get_object(val):
+        try:
+            return Category.objects.get(name=val)
+        except:
+            return False
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
@@ -24,11 +31,19 @@ class CategorySerializer(serializers.ModelSerializer):
 class SubCategory(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     name = models.CharField(max_length=50)
+    date_created= models.DateTimeField(auto_now_add=True)
+    date_updated = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.name
+    def get_object(val):
+        try:
+            return SubCategory.objects.get(name=val)
+        except:
+            return False
 class SubCategorySerializer(serializers.ModelSerializer):
     category = CategorySerializer(read_only=True)
+    
     class Meta:
         model = SubCategory
         fields = ['id', 'name', 'category']
@@ -37,11 +52,12 @@ class SubCategorySerializer(serializers.ModelSerializer):
 class Product(models.Model):
     sub_category = models.ForeignKey(SubCategory, on_delete=models.CASCADE)
     name = models.CharField(unique=True, max_length=50)
-    quantity = models.IntegerField()
+    #quantity = models.IntegerField()
     #quantity_after_sale = models.IntegerField()
+    date_created= models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now_add=True)
-    price_per_item = models.FloatField(max_length=280)
-    procure_price_per_item = models.FloatField(max_length=280)
+    #price_per_item = models.FloatField(max_length=280)
+    #procure_price_per_item = models.FloatField(max_length=280)
 
     def __str__(self):
         return self.name
