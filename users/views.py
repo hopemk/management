@@ -25,6 +25,19 @@ class CompanyView(APIView):
         return Response({"data": serializer.data}, status=status.HTTP_200_OK)
     def post(self, request):
         data = request.data
+        user = User.objects.create(
+            email = data['email'],
+            password= data['password']
+        )
+        profile = Profile.object.create(
+            user = user,
+            bio = data['bio'],
+            nationality = data['nationality'],
+
+        )
+        user.save()
+        profile.save()
+        '''
         name = data['name']
         if not name:
             return Response({"message": "Name not defined"}, status=status.HTTP_404_NOT_FOUND )
@@ -40,6 +53,7 @@ class CompanyView(APIView):
             location = location
         )
         company.save()
+        '''
         return Response({"message": "saved", "data":data}, status=status.HTTP_201_CREATED )
     def put(self, request):
         data = request.data
