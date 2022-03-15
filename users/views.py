@@ -6,16 +6,16 @@ from rest_framework.response import Response
 from rest_framework import authentication, permissions
 from django.contrib.auth.models import User
 
-from .models import Company
-
+from .models import Profile
+from .serializers import UserSerializer, ProductSerializer
 
 # Create your views here.
-class CompanyView(APIView):
-    model = Company
+class UserView(APIView):
+    model = Profile
 
     def get(self, request, pk = None):
         if pk:
-            company = Company.get_object(pk)
+            profile = Profile.get_object(pk)
             serializer = CompanySerializer(company)
         else:
             companies = Company.objects.all()
@@ -28,6 +28,8 @@ class CompanyView(APIView):
         user = User.objects.create(
             email = data['email'],
             password= data['password']
+            first_name = data['firstName'],
+            last_name = data['lastName']
         )
         profile = Profile.object.create(
             user = user,
