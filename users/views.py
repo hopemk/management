@@ -7,7 +7,7 @@ from rest_framework import authentication, permissions
 from django.contrib.auth.models import User
 
 from .models import Profile
-from .serializers import UserSerializer, ProductSerializer
+from .serializers import UserSerializer, ProfileSerializer
 
 # Create your views here.
 class UserView(APIView):
@@ -25,20 +25,32 @@ class UserView(APIView):
         return Response({"data": serializer.data}, status=status.HTTP_200_OK)
     def post(self, request):
         data = request.data
-        user = User.objects.create(
+        TP_400_BAD_REQUEST)
+        user_serializer = UserSerializer(
             email = data['email'],
             password= data['password']
             first_name = data['firstName'],
             last_name = data['lastName']
         )
-        profile = Profile.object.create(
+        if user_serializer.is_valid():
+            user = user_serializer.save()
+            if not user:
+                return Response(user_proserializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        
+        profile_serializer = ProfileSerializer(
             user = user,
             bio = data['bio'],
             nationality = data['nationality'],
 
         )
-        user.save()
-        profile.save()
+        if profile_serializer.is_valid():
+            profile = profile_serializer.save()
+            if not profile:
+                return Response(profile_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
         '''
         name = data['name']
         if not name:
