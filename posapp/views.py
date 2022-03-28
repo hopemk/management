@@ -115,7 +115,7 @@ class ProductView(APIView):
         sub_category = SubCategory.get_object(data['sub_category'])
         if not sub_category:
             return  Response({"error": "SubCategory not Found"},status=status.HTTP_404_NOT_FOUND)
-        else if not data['name']:
+        if not data['name']:
             return  Response({"error": "Name field is empty"},status=status.HTTP_404_NOT_FOUND)
         cat_name = data['name']
         product = Product(
@@ -132,7 +132,7 @@ class ProductView(APIView):
         sub_category = SubCategory.get_object(data['sub_category'])
         if not sub_category:
             return  Response({"error": "SubCategory not Found"},status=status.HTTP_404_NOT_FOUND)
-        else if not data['name']:
+        if not data['name']:
             return  Response({"error": "Name field is empty"},status=status.HTTP_404_NOT_FOUND)
         cat_name = data['name']
         date_updated = datetime.now()

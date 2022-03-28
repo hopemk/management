@@ -16,19 +16,18 @@ class UserView(APIView):
     def get(self, request, pk = None):
         if pk:
             profile = Profile.get_object(pk)
-            serializer = CompanySerializer(company)
+            serializer = ProfileSerializer(profile)
         else:
-            companies = Company.objects.all()
-            serializer = CompanySerializer(Company, many = True)
+            profile = Profile.objects.all()
+            serializer = ProfileSerializer(profile, many = True)
         #print(products[0].product)
         #print(repr(serializer))
         return Response({"data": serializer.data}, status=status.HTTP_200_OK)
     def post(self, request):
-        data = request.data
-        TP_400_BAD_REQUEST)
+        data = request.data        
         user_serializer = UserSerializer(
             email = data['email'],
-            password= data['password']
+            password= data['password'],
             first_name = data['firstName'],
             last_name = data['lastName']
         )
